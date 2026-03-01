@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums for type safety
+enum Role {
+  CUSTOMER
+  AGENT
+  ADMIN
+}
+
+enum DocumentType {
+  PDF
+  TXT
+  DOCX
+}
+
+enum DocumentStatus {
+  PROCESSING
+  READY
+  FAILED
+  PARTIAL
+}
+
+enum JobStatus {
+  PENDING
+  CHUNKING
+  EMBEDDING
+  COMPLETE
+  FAILED
+}
+
+// User model - references Clerk user IDs
+model User {
+  id        String   @id // Clerk user ID
+  email     String   @unique
+  role      Role     @default(CUSTOMER)
+  documents Document[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+// Document model - represents uploaded knowledge base documents
+model Document {
+  id          String         @id @default(uuid())
+  name        String
+  fileType    DocumentType
+  fileSize    Int
+  status      DocumentStatus @default(PROCESSING)
+  uploadedBy  User           @relation(fields: [uploadedById], references: [id])
+  uploadedById String
+  chunks      DocumentChunk[]
+  job         ProcessingJob?
+  chunkCount  Int            @default(0)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  processedAt DateTime?
+
+  @@index([uploadedById])
+  @@index([status])
+  @@map("documents")
+}
+
+// DocumentChunk model - stores text chunks with vector embeddings
+model DocumentChunk {
+  id         String   @id @default(uuid())
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  documentId String
+  chunkIndex Int
+  content    String
+  // pgvector embedding - 1536 dimensions for text-embedding-3-small
+  embedding  Unsupported("vector(1536)")
+  createdAt  DateTime @default(now())
+
+  @@unique([documentId, chunkIndex])
+  @@index([documentId])
+  @@map("document_chunks")
+}
+
+// ProcessingJob model - tracks background document processing
+model ProcessingJob {
+  id          String    @id @default(uuid())
+  document    Document  @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  documentId  String    @unique
+  status      JobStatus @default(PENDING)
+  progress    Int       @default(0)
+  errorMessage String?
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  @@index([status])
+  @@map("processing_jobs")
+}

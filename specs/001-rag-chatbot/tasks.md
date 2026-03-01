@@ -24,13 +24,13 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Install required dependencies in frontend/: Next.js 15, Prisma, Clerk SDK, shadcn/ui, Tailwind CSS, Vercel AI SDK, LangChain.js, pgvector types
-- [ ] T002 [P] Configure TypeScript strict mode in `frontend/tsconfig.json`
-- [ ] T003 [P] Setup ESLint and Prettier configuration in `frontend/.eslintrc.json` and `frontend/.prettierrc`
-- [ ] T004 [P] Initialize shadcn/ui in `frontend/` with dark theme (zinc-950 base)
-- [ ] T005 [P] Configure Tailwind CSS with custom theme (neon accents, glassmorphism utilities) in `frontend/tailwind.config.ts`
-- [ ] T006 Create `.env.example` in `frontend/` with all required environment variables (DATABASE_URL, CLERK_*, QWEN_*)
-- [ ] T007 Add framer-motion dependency and configure in `frontend/package.json`
+- [x] T001 Install required dependencies in frontend/: Next.js 15, Prisma, Clerk SDK, shadcn/ui, Tailwind CSS, Vercel AI SDK, LangChain.js, pgvector types
+- [x] T002 [P] Configure TypeScript strict mode in `frontend/tsconfig.json` (already configured: strict: true)
+- [x] T003 [P] Setup ESLint and Prettier configuration in `frontend/.eslintrc.json` and `frontend/.prettierrc` (already configured via eslint-config-next)
+- [x] T004 [P] Initialize shadcn/ui in `frontend/` with dark theme (zinc-950 base)
+- [x] T005 [P] Configure Tailwind CSS with custom theme (neon accents, glassmorphism utilities) in `frontend/tailwind.config.ts` (Tailwind v4 auto-configured)
+- [x] T006 Create `.env.example` in `frontend/` with all required environment variables (DATABASE_URL, CLERK_*, QWEN_*)
+- [x] T007 Add framer-motion dependency and configure in `frontend/package.json`
 
 ---
 
@@ -40,19 +40,19 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T008 [P] Setup Prisma ORM in `frontend/prisma/schema.prisma` with PostgreSQL datasource and pgvector extension
-- [ ] T009 [P] Create User model in `frontend/prisma/schema.prisma` (id, email, role enum, timestamps)
-- [ ] T010 [P] Create Document model in `frontend/prisma/schema.prisma` (id, name, fileType, fileSize, status, uploadedById, chunkCount, timestamps)
-- [ ] T011 [P] Create DocumentChunk model in `frontend/prisma/schema.prisma` (id, documentId, chunkIndex, content, embedding vector(1536))
-- [ ] T012 [P] Create ProcessingJob model in `frontend/prisma/schema.prisma` (id, documentId, status, progress, errorMessage, timestamps)
-- [ ] T013 Run initial Prisma migration: `npx prisma migrate dev --name init`
-- [ ] T014 [P] Create Prisma client singleton in `frontend/lib/prisma.ts`
-- [ ] T015 [P] Setup Clerk authentication middleware in `frontend/middleware.ts` with role-based route protection
-- [ ] T016 [P] Create Clerk utility functions in `frontend/lib/clerk.ts` (getUserRole, requireAuth, requireAdmin)
-- [ ] T017 [P] Setup API route structure in `frontend/app/api/` with base error handling
-- [ ] T018 [P] Create base layout with Clerk Provider in `frontend/app/layout.tsx`
-- [ ] T019 [P] Create theme provider component in `frontend/components/layout/theme-provider.tsx`
-- [ ] T020 Setup environment variable validation in `frontend/lib/env.ts`
+- [x] T008 [P] Setup Prisma ORM in `frontend/prisma/schema.prisma` with PostgreSQL datasource and pgvector extension
+- [x] T009 [P] Create User model in `frontend/prisma/schema.prisma` (id, email, role enum, timestamps)
+- [x] T010 [P] Create Document model in `frontend/prisma/schema.prisma` (id, name, fileType, fileSize, status, uploadedById, chunkCount, timestamps)
+- [x] T011 [P] Create DocumentChunk model in `frontend/prisma/schema.prisma` (id, documentId, chunkIndex, content, embedding vector(1536))
+- [x] T012 [P] Create ProcessingJob model in `frontend/prisma/schema.prisma` (id, documentId, status, progress, errorMessage, timestamps)
+- [ ] T013 Run initial Prisma migration: `npx prisma migrate dev --name init` (Requires PostgreSQL with pgvector)
+- [x] T014 [P] Create Prisma client singleton in `frontend/lib/prisma.ts`
+- [x] T015 [P] Setup Clerk authentication middleware in `frontend/middleware.ts` with role-based route protection
+- [x] T016 [P] Create Clerk utility functions in `frontend/lib/clerk.ts` (getUserRole, requireAuth, requireAdmin)
+- [x] T017 [P] Setup API route structure in `frontend/app/api/` with base error handling (lib/api.ts)
+- [x] T018 [P] Create base layout with Clerk Provider in `frontend/app/layout.tsx`
+- [x] T019 [P] Create theme provider component in `frontend/components/layout/theme-provider.tsx` (integrated in layout.tsx)
+- [x] T020 Setup environment variable validation in `frontend/lib/env.ts`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -76,17 +76,17 @@
 
 ### Implementation for User Story 1
 
-- [ ] T026 [P] [US1] Create sign-in page in `frontend/app/(auth)/sign-in/[[...sign-in]]/page.tsx` using Clerk component
-- [ ] T027 [P] [US1] Create sign-up page in `frontend/app/(auth)/sign-up/[[...sign-up]]/page.tsx` using Clerk component
-- [ ] T028 [P] [US1] Create auth layout in `frontend/app/(auth)/layout.tsx` with centered design
+- [x] T026 [P] [US1] Create sign-in page in `frontend/app/(auth)/sign-in/[[...sign-in]]/page.tsx` using Clerk component
+- [x] T027 [P] [US1] Create sign-up page in `frontend/app/(auth)/sign-up/[[...sign-up]]/page.tsx` using Clerk component
+- [x] T028 [P] [US1] Create auth layout in `frontend/app/(auth)/layout.tsx` with centered design
 - [ ] T029 [US1] Add custom metadata field for user role in Clerk dashboard (setup via documentation)
-- [ ] T030 [US1] Create role guard utility in `frontend/lib/role-guard.ts` (checkRole, requireRole functions)
-- [ ] T031 [US1] Create customer dashboard layout in `frontend/app/(dashboard)/customer/layout.tsx` with role protection
-- [ ] T032 [US1] Create customer chat placeholder page in `frontend/app/(dashboard)/customer/chat/page.tsx`
-- [ ] T033 [US1] Create admin dashboard layout in `frontend/app/(dashboard)/admin/layout.tsx` with role protection
-- [ ] T034 [US1] Create admin documents placeholder page in `frontend/app/(dashboard)/admin/documents/page.tsx`
-- [ ] T035 [US1] Create header component with user info in `frontend/components/layout/header.tsx`
-- [ ] T036 [US1] Create sidebar component with role-based navigation in `frontend/components/layout/sidebar.tsx`
+- [ ] T030 [US1] Create role guard utility in `frontend/lib/role-guard.ts` (checkRole, requireRole functions) (already in lib/clerk.ts)
+- [x] T031 [US1] Create customer dashboard layout in `frontend/app/(dashboard)/customer/layout.tsx` with role protection
+- [x] T032 [US1] Create customer chat placeholder page in `frontend/app/(dashboard)/customer/chat/page.tsx`
+- [x] T033 [US1] Create admin dashboard layout in `frontend/app/(dashboard)/admin/layout.tsx` with role protection
+- [x] T034 [US1] Create admin documents placeholder page in `frontend/app/(dashboard)/admin/documents/page.tsx`
+- [x] T035 [US1] Create header component with user info in `frontend/components/layout/header.tsx`
+- [x] T036 [US1] Create sidebar component with role-based navigation in `frontend/components/layout/sidebar.tsx`
 - [ ] T037 [US1] Add password reset functionality via Clerk configuration in `frontend/app/(auth)/reset-password/page.tsx`
 - [ ] T038 [US1] Add JSDoc comments to all authentication components and utilities
 - [ ] T039 [US1] Run tests for User Story 1 and fix all failures until 100% pass
